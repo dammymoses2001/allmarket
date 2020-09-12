@@ -39,12 +39,12 @@ export const myProductAction = () => {
   const currentUser = localStorage.getItem('access_token')
     ? decode(localStorage.getItem('access_token')).user.email
     : ' ';
-  // console.log(currentUser);
+  //console.log(currentUser);
   return (dispatch) => {
     dispatch(myProductRequest());
     axios
       .post(
-        `https://allmarket1.herokuapp.com/myproduct`,
+        `https://allmarket1.herokuapp.com/market/myproduct`,
         {
           email: currentUser,
         },
@@ -62,6 +62,7 @@ export const myProductAction = () => {
         }
       })
       .catch((err) => {
+        console.log(err.response)
         dispatch(myProductFailure('error'));
       });
   };

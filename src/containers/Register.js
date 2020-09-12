@@ -26,9 +26,9 @@ function Register(props) {
     setRedirect(!redirect);
     const { fullname, email, password, contact } = register;
     console.log(email, password);
-    if (fullname && email && password && contact !== ' ') {
+    if (fullname.length > 1 && email.length > 1 && password.length > 1 && contact.length > 1) {
       props.registerUser(register);
-      setRegister(initialState);
+      // setRegister(initialState);
       // console.log(props.register);
     } else {
       setMessage('All fields are required');

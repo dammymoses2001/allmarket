@@ -31,13 +31,14 @@ export const FetchToken = (userdetails) => {
     try {
       dispatch(loginUserRequest());
       axios
-        .post('https://allmarket1.herokuapp.com/login', {
+        .post('https://allmarket1.herokuapp.com/market/login', {
           email: userdetails.email,
           password: userdetails.password,
         })
         .then((response) => {
           // console.log(response.data);
           if (response.data.token) {
+
             dispatch(loginUserSuccess(response.data));
             localStorage.clear();
             localStorage.setItem('access_token', response.data.token);
@@ -46,7 +47,7 @@ export const FetchToken = (userdetails) => {
         })
 
         .catch((err) => {
-          // console.log(err.response.data);
+          console.log(err.response.data);
           dispatch(loginUserFailure('Invaild credential'));
         });
     } catch (error) {

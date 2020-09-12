@@ -37,12 +37,13 @@ export const registerUser = (userdetails) => {
       })
       .then((response) => {
         if (response.data) {
-          // console.log(response.data);
+          console.log(response.data);
           dispatch(registerSuccess(response.data));
           // localStorage.setItem('access_token', response.data.token);
         }
       })
       .catch((err) => {
+        console.log(err)
         dispatch(registerFailed(err.message));
       });
   };
