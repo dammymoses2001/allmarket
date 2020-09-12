@@ -47,7 +47,7 @@ export const FetchToken = (userdetails) => {
         })
 
         .catch((err) => {
-          console.log(err.response.data);
+          //console.log(err.response.data);
           dispatch(loginUserFailure('Invaild credential'));
         });
     } catch (error) {
