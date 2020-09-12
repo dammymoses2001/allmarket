@@ -31,7 +31,7 @@ export const FetchToken = (userdetails) => {
     try {
       dispatch(loginUserRequest());
       axios
-        .post('https://allmarket1.herokuapp.com/market/login', {
+        .post('https://allmarket1.herokuapp.com/login', {
           email: userdetails.email,
           password: userdetails.password,
         })
