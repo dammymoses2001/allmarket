@@ -38,7 +38,7 @@ export const Header = ({ title, description, button, history }) => {
                         pathname: '/login',
                       });
                       localStorage.clear();
-                      window.location.reload();
+                      //window.location.reload();
                       // localStorage.setItem('access_token', '');
                     }}
                   >
