@@ -5,15 +5,16 @@ import { connect } from 'react-redux';
 import { addProductDetails, addProductRequest } from '../redux/index';
 import { FaArrowLeft } from 'react-icons/fa';
 
-const userCon = decode(localStorage.getItem('access_token'));
-const defaultState = {
-  product_name: '',
-  userContact: userCon && userCon.user ? userCon.user.contact : '',
-  product_price: '',
-  imageurl: '',
-};
+
 
 const AddProduct = (props) => {
+  const userCon = decode(localStorage.getItem('access_token')) || localStorage.getItem('access_token');
+  const defaultState = {
+    product_name: '',
+    userContact: userCon && userCon.user ? userCon.user.contact : '',
+    product_price: '',
+    imageurl: '',
+  };
   // console.log();
   //console.log(props);
   const [productDetails, setProductDetails] = useState({
