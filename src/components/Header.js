@@ -8,7 +8,7 @@ export const Header = ({ title, description, button, history }) => {
     try {
       const user = decode(localStorage.getItem('access_token')).user;
       setUser(user);
-    } catch (error) {}
+    } catch (error) { }
   }, []);
   const [user, setUser] = useState();
 
@@ -27,24 +27,24 @@ export const Header = ({ title, description, button, history }) => {
               {user ? (
                 <Link to='/market/addproduct'>{button}</Link>
               ) : (
-                <button
-                  className='btn btn-dark'
-                  to='/login'
-                  onClick={(e) => {
-                    console.log('click');
-                    e.preventDefault();
-                    setUser('');
-                    history.replace({
-                      pathname: '/login',
-                    });
-                    localStorage.clear();
-                    window.location.reload();
-                    // localStorage.setItem('access_token', '');
-                  }}
-                >
-                  {button}
-                </button>
-              )}
+                  <button
+                    className='btn btn-dark'
+                    to='/login'
+                    onClick={(e) => {
+                      // console.log('click');
+                      e.preventDefault();
+                      setUser('');
+                      history.replace({
+                        pathname: '/login',
+                      });
+                      localStorage.clear();
+                      window.location.reload();
+                      // localStorage.setItem('access_token', '');
+                    }}
+                  >
+                    {button}
+                  </button>
+                )}
               {/* <Link to='/market/addproduct'>{button}</Link> */}
             </div>
 

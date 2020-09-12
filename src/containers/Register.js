@@ -109,7 +109,7 @@ function Register(props) {
                 <span className='txt2'>
                   Click here to
                   <Link to='/login'>
-                    <span>Sign</span>
+                    &nbsp;<span>Sign</span>
                   </Link>
                 </span>
               </div>

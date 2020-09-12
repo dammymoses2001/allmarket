@@ -125,7 +125,7 @@ export const Login = ({ history, token, FetchToken }) => {
                           <span className='txt2'>
                             Click here to
                             <Link to='/register'>
-                              <span>Sign Up</span>
+                              &nbsp; <span>Sign Up</span>
                             </Link>
                           </span>
                         </div>

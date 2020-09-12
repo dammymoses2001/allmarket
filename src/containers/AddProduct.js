@@ -20,7 +20,7 @@ const AddProduct = (props) => {
   const [productDetails, setProductDetails] = useState({
     ...defaultState,
   });
-
+  // console.log(productDetails)
   const [error, setError] = useState(null);
   const handleChange = (e) => {
     const name = e.target.name;
@@ -61,8 +61,8 @@ const AddProduct = (props) => {
 
     if (isVaild) {
       props.addProductDetails(productDetails);
-      setProductDetails(defaultState);
       props.addProductRequest();
+      setProductDetails(defaultState);
     }
   };
 

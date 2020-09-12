@@ -56,7 +56,7 @@ export const fetchProduct = (props) => {
   return (dispatch) => {
     dispatch(fetchProductRequest());
     axios
-      .get('http://localhost:3000/market')
+      .get('https://allmarket1.herokuapp.com/market')
       .then((response) => {
         if (response.data) {
           dispatch(fetchProductSuccess(response.data));
