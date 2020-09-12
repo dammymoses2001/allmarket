@@ -3,14 +3,14 @@ import Register from '../containers/Register';
 import Market from '../containers/Market';
 import Product from '../containers/AddProduct';
 import Error from '../containers/Error';
-import Index from '../containers/Index';
+// import Index from '../containers/Index';
 import Edit_UpdateProduct from '../containers/Edit_UpdateProduct';
 import MyProduct from '../containers/MyProduct';
 import MyProfile from '../containers/MyProfile';
 export const publicRoute = [
   {
     path: '/',
-    component: Index,
+    component: Market,
   },
   {
     path: '/login',
@@ -20,10 +20,7 @@ export const publicRoute = [
     path: '/register',
     component: Register,
   },
-  {
-    path: '/market',
-    component: Market,
-  },
+
 ];
 
 export const protectedRoute = [

@@ -16,7 +16,7 @@ function AllProducts({ history, fetchProduct, deleteProductDetails, product }) {
         ? decode(localStorage.getItem('access_token')).user.email
         : '';
       setUserEmail(user);
-    } catch (error) {}
+    } catch (error) { }
   }, []);
 
   //after decoding the email
@@ -32,60 +32,65 @@ function AllProducts({ history, fetchProduct, deleteProductDetails, product }) {
         pathname: '/market/update',
         state: product,
       });
-    } catch (error) {}
+    } catch (error) { }
   };
   const handleDelete = (id) => {
     deleteProductDetails(id);
   };
   return (
     <div className='container'>
-      {/* <div className={props.product.isDeleted ? 'header-message' : null}>
-        <p>{props.product.isDeleted}</p>
-      </div> */}
+
       {product.loading ? (
         <div>
           <Loading />
         </div>
       ) : (
-        <div className='row'>
-          {product.product.map((product) => (
-            <div className='col-md-4' key={product.id}>
-              <Products
-                key={product.id}
-                id={product.id}
-                imagelink={product.imageurl}
-                price={product.product_price}
-                name={product.product_name}
-                contact={product.user_contact}
-                email={product.email}
-                currentUserEmail={userEmail}
-              />
-              <div className='absolute d-flex justify-content-between'>
-                <div className='text-muted text-center price '>
-                  ${product.product_price}
-                </div>
-                <div className='delete'>
-                  {userEmail === product.email ? (
-                    <div>
-                      <FaEdit
-                        className='product-icon'
-                        color='white'
-                        onClick={() => handleEdit(product)}
-                      />
+          <>
+            {/* {console.log(product.product.length)} */}
+            {product.product.length === 0 ?
+              <div className='border-2 text-center my-5'> No Product Currently</div> :
+              <div className='row'>
+                {product.product.map((product) => (
+                  <div className='col-md-4' key={product.id}>
+                    <Products
+                      key={product.id}
+                      id={product.id}
+                      imagelink={product.imageurl}
+                      price={product.product_price}
+                      name={product.product_name}
+                      contact={product.user_contact}
+                      email={product.email}
+                      currentUserEmail={userEmail}
+                    />
+                    <div className='absolute d-flex justify-content-between'>
+                      <div className='text-muted text-center price '>
+                        ${product.product_price}
+                      </div>
+                      <div className='delete'>
+                        {userEmail === product.email ? (
+                          <div>
+                            <FaEdit
+                              className='product-icon'
+                              color='white'
+                              onClick={() => handleEdit(product)}
+                            />
 
-                      <FaTrash
-                        className='product-icon'
-                        color='white'
-                        onClick={() => handleDelete(product.id)}
-                      />
+                            <FaTrash
+                              className='product-icon'
+                              color='white'
+                              onClick={() => handleDelete(product.id)}
+                            />
+                          </div>
+                        ) : null}
+                      </div>
                     </div>
-                  ) : null}
-                </div>
+                  </div>
+                ))}
               </div>
-            </div>
-          ))}
-        </div>
-      )}
+            }
+
+          </>
+        )}
     </div>
   );
 }

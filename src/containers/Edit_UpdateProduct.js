@@ -77,7 +77,7 @@ const Edit_UpdateProduct = (props) => {
           <div className='wrap-login100'>
             <form className='login100-form validate-form'>
               <div className='header-nav'>
-                <Link to='/market' className='path'>
+                <Link to='/' className='path'>
                   <FaArrowLeft />
                 </Link>
                 <span className='login100-form-title '>

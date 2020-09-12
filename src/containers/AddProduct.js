@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-// import decode from 'jwt-decode';
+import decode from 'jwt-decode';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { addProductDetails, addProductRequest } from '../redux/index';
 import { FaArrowLeft } from 'react-icons/fa';
 
-const userCon = localStorage.getItem('access_token');
+const userCon = decode(localStorage.getItem('access_token'));
 const defaultState = {
   product_name: '',
   userContact: userCon && userCon.user ? userCon.user.contact : '',
@@ -15,7 +15,7 @@ const defaultState = {
 
 const AddProduct = (props) => {
   // console.log();
-  // console.log(props);
+  //console.log(props);
   const [productDetails, setProductDetails] = useState({
     ...defaultState,
   });
@@ -73,7 +73,7 @@ const AddProduct = (props) => {
           <div className='wrap-login100'>
             <form className='login100-form validate-form'>
               <div className='header-nav'>
-                <Link to='/market' className='path'>
+                <Link to='/' className='path'>
                   <FaArrowLeft />
                 </Link>
                 <span className='login100-form-title '>Add Your Product</span>

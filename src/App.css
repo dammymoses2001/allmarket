@@ -620,7 +620,7 @@ header .hideSideBar div {
 }
 
 .topcard {
-  height: 300px;
+  height: 350px;
   /* border: 1px solid gray; */
   border: none;
   border-radius: 5px;
@@ -641,18 +641,20 @@ header .hideSideBar div {
 /* .card {
   height: 300px;
 } */
-.card .img {
+.topcard .img {
   overflow: hidden;
-
+  height: 400px;
   /* border:10px solid green; */
 }
 figure {
   position: relative;
   border: none;
+  height: 500px;
 }
 .figure-img {
   /* border:2px solid blue;  */
   height: 100%;
+  width: 300px;
   object-fit: cover;
   filter: brightness(100%);
 }

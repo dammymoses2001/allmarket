@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import decode from 'jwt-decode';
 import Nav from '../components/Nav';
 import Header from '../components/Header';
+import Loading from '../components/Loading'
 import {
   myProductAction,
   deleteProductDetails,
@@ -33,7 +34,7 @@ export const MyProduct = ({
         pathname: '/market/update',
         state: product,
       });
-    } catch (error) {}
+    } catch (error) { }
   };
   const handleDelete = (id) => {
     console.log(id);
@@ -50,47 +51,53 @@ export const MyProduct = ({
       />
       <div className='container'>
         {myProduct.loading ? (
-          <div className='text-center alert alert-success'>
-            Loading............
+          <div >
+            <Loading />
           </div>
         ) : (
-          <div className='row'>
-            {myProduct.myProduct.map((product) => (
-              <div className='col-md-4' key={product.id}>
-                <Products
-                  key={product.id}
-                  id={product.id}
-                  imagelink={product.imageurl}
-                  price={product.product_price}
-                  name={product.product_name}
-                  contact={product.user_contact}
-                  email={product.email}
-                  currentUserEmail={userEmail}
-                />
-                <div className='absolute d-flex justify-content-between'>
-                  <div className='text-muted text-center price '>
-                    ${product.product_price}
-                  </div>
-                  <div className='delete'>
-                    <div>
-                      <FaEdit
-                        className='product-icon'
-                        color='white'
-                        onClick={() => handleEdit(product)}
+            <>
+              {myProduct.myProduct.length === 0 ?
+                <div className='border-2 text-center my-5'>You don't have any product Currently</div> :
+                <div className='row'>
+                  {myProduct.myProduct.map((product) => (
+                    <div className='col-md-4' key={product.id}>
+                      <Products
+                        key={product.id}
+                        id={product.id}
+                        imagelink={product.imageurl}
+                        price={product.product_price}
+                        name={product.product_name}
+                        contact={product.user_contact}
+                        email={product.email}
+                        currentUserEmail={userEmail}
                       />
+                      <div className='absolute d-flex justify-content-between'>
+                        <div className='text-muted text-center price '>
+                          ${product.product_price}
+                        </div>
+                        <div className='delete'>
+                          <div>
+                            <FaEdit
+                              className='product-icon'
+                              color='white'
+                              onClick={() => handleEdit(product)}
+                            />
 
-                      <FaTrash
-                        className='product-icon'
-                        color='white'
-                        onClick={() => handleDelete(product.id)}
-                      />
+                            <FaTrash
+                              className='product-icon'
+                              color='white'
+                              onClick={() => handleDelete(product.id)}
+                            />
+                          </div>
+                        </div>
+                      </div>
                     </div>
-                  </div>
+                  ))}
                 </div>
-              </div>
-            ))}
-          </div>
-        )}
+              }
+
+            </>
+          )}
       </div>
     </div>
   );

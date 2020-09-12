@@ -7,8 +7,8 @@ function Products(props) {
   return (
     <div>
       <div className=' '>
-        <div className=' my-4 topcard '>
-          <figure className='figure card '>
+        <div className=' my-4 topcard   '>
+          <figure className='figure mb-3 '>
             <img
               className='figure-img img-fluid'
               src={props.imagelink}

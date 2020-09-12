@@ -8,7 +8,7 @@ function Nav(props) {
     try {
       const user = decode(localStorage.getItem('access_token')).user;
       setUser(user);
-    } catch (error) {}
+    } catch (error) { }
   }, []);
   const [user, setUser] = useState();
 
@@ -51,33 +51,33 @@ function Nav(props) {
                   e.preventDefault();
                   setUser('');
                   props.history.replace({
-                    pathname: '/market',
+                    pathname: '/',
                   });
                   localStorage.clear();
                   window.location.reload();
                   // localStorage.setItem('access_token', '');
                 }}
               >
-                <Link to='/market'>Logout</Link>
+                <Link to='/'>Logout</Link>
               </li>
             </>
           ) : (
-            <li
-              className='home'
-              onClick={(e) => {
-                e.preventDefault();
-                localStorage.clear();
-                setUser('');
-                props.history.replace({
-                  pathname: '/login',
-                });
+              <li
+                className='home'
+                onClick={(e) => {
+                  e.preventDefault();
+                  localStorage.clear();
+                  setUser('');
+                  props.history.replace({
+                    pathname: '/login',
+                  });
 
-                // localStorage.setItem('access_token', '');
-              }}
-            >
-              Sign
-            </li>
-          )}
+                  // localStorage.setItem('access_token', '');
+                }}
+              >
+                Sign
+              </li>
+            )}
         </ul>
       </div>
       {/* {user ? ( */}
@@ -90,7 +90,7 @@ function Nav(props) {
         </span>
         <ul className='hide'>
           <li className='home'>
-            <Link to='/market'>Home</Link>
+            <Link to='/'>Home</Link>
           </li>
 
           {user ? (
@@ -109,33 +109,33 @@ function Nav(props) {
                   e.preventDefault();
                   setUser('');
                   props.history.replace({
-                    pathname: '/market',
+                    pathname: '/',
                   });
                   localStorage.clear();
                   window.location.reload();
                   // localStorage.setItem('access_token', '');
                 }}
               >
-                <Link to='/market'>Logout</Link>
+                <Link to='/'>Logout</Link>
               </li>
             </>
           ) : (
-            <li
-              className='home'
-              onClick={(e) => {
-                e.preventDefault();
-                localStorage.clear();
-                setUser('');
-                props.history.replace({
-                  pathname: '/login',
-                });
+              <li
+                className='home'
+                onClick={(e) => {
+                  e.preventDefault();
+                  localStorage.clear();
+                  setUser('');
+                  props.history.replace({
+                    pathname: '/login',
+                  });
 
-                // localStorage.setItem('access_token', '');
-              }}
-            >
-              Sign
-            </li>
-          )}
+                  // localStorage.setItem('access_token', '');
+                }}
+              >
+                Sign
+              </li>
+            )}
         </ul>
       </div>
       {/* ) : null} */}

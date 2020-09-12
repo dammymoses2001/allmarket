@@ -16,7 +16,7 @@ export const MyProfile = ({ myProfileAction, myProfile }) => {
             <div className='wrap-login100'>
               <form className='login100-form validate-form'>
                 <div className='header-nav'>
-                  <Link to='/market' className='path'>
+                  <Link to='/' className='path'>
                     <FaArrowLeft />
                   </Link>
                   <span className='login100-form-title '>My Profile</span>
@@ -70,7 +70,7 @@ export const MyProfile = ({ myProfileAction, myProfile }) => {
                 </div>
 
                 <div className='container-login100-form-btn'>
-                  <Link to='/market'>
+                  <Link to='/'>
                     <button className='login100-form-btn'>Back</button>
                   </Link>
                 </div>

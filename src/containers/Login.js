@@ -11,7 +11,7 @@ export const Login = ({ history, token, FetchToken }) => {
   useEffect(() => {
     if (localStorage.getItem('access_token')) {
       history.push({
-        pathname: '/market',
+        pathname: '/',
       });
     }
   });
