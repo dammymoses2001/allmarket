@@ -44,7 +44,7 @@ export const updateProductAction = (data) => {
       dispatch(updateProductRequest());
       axios
         .put(
-          'http://localhost:3000/market/update',
+          'https://allmarket1.herokuapp.com/update',
           {
             id: data.id,
             email,

@@ -44,7 +44,7 @@ export const myProductAction = () => {
     dispatch(myProductRequest());
     axios
       .post(
-        `http://localhost:3000/market/myproduct`,
+        `https://allmarket1.herokuapp.com/myproduct`,
         {
           email: currentUser,
         },

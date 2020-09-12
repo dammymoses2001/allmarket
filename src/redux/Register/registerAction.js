@@ -29,7 +29,7 @@ export const registerUser = (userdetails) => {
   return (dispatch) => {
     dispatch(registerRequest);
     axios
-      .post('http://localhost:3000/register', {
+      .post('https://allmarket1.herokuapp.com/register', {
         fullname: userdetails.fullname,
         email: userdetails.email,
         password: userdetails.password,

@@ -36,7 +36,7 @@ export const myProfileAction = () => {
     dispatch(myProfileRequest());
     axios
       .post(
-        `http://localhost:3000/market/myProfile`,
+        `https://allmarket1.herokuapp.com/myProfile`,
         {
           email: currentUser,
         },

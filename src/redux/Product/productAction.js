@@ -82,7 +82,7 @@ export const deleteProductDetails = (id) => {
     dispatch(deleteProductRequest());
     try {
       axios
-        .delete(`http://localhost:3000/market/delete/${id}`, {
+        .delete(`https://allmarket1.herokuapp.com/delete/${id}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },

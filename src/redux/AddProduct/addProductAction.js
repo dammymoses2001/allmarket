@@ -7,7 +7,7 @@ import {
 } from './addProductType';
 
 try {
-} catch (error) {}
+} catch (error) { }
 //not using this yet as the contact can change
 // const contact = token.user.contact;
 // console.log(email);
@@ -43,7 +43,7 @@ export const addProductDetails = (data) => {
     try {
       axios
         .post(
-          'http://localhost:3000/market/add',
+          'https://allmarket1.herokuapp.com/market/add',
           {
             productName: data.product_name,
             email: currentUser,
