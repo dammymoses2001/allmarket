@@ -1,54 +1,39 @@
-import axios from 'axios';
+import axiosInstance from '../helper/axios';
 import decode from 'jwt-decode';
-import {
-  MY_PROFILE_REQUEST,
-  MY_PROFILE_SUCCESS,
-  MY_PROFILE_FAILED,
-} from './myProfileType';
+import {userProfile} from '../constant'
 
 const myProfileRequest = () => {
   return {
-    type: MY_PROFILE_REQUEST,
+    type: userProfile.MY_PROFILE_REQUEST,
   };
 };
 
 const myProfileSuccess = (data) => {
   return {
-    type: MY_PROFILE_SUCCESS,
+    type: userProfile.MY_PROFILE_SUCCESS,
     payload: data,
   };
 };
 
 const myProfileFailure = (error) => {
   return {
-    type: MY_PROFILE_FAILED,
+    type: userProfile.MY_PROFILE_FAILED,
     payload: error,
   };
 };
 
 export const myProfileAction = () => {
-  const token = localStorage.getItem('access_token');
   const currentUser = localStorage.getItem('access_token')
     ? decode(localStorage.getItem('access_token')).user.email
     : ' ';
-  //   console.log(currentUser);
+  //console.log(currentUser);
   return (dispatch) => {
     dispatch(myProfileRequest());
-    axios
-      .post(
-        `https://allmarket1.herokuapp.com/market/myProfile`,
-        {
-          email: currentUser,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            // Authorization: 'Bearer' + ' ' + token,
-          },
-        }
-      )
+    axiosInstance
+    .post('market/myProfile', { email: currentUser }, {})
       .then((response) => {
         if (response.data) {
+          //console.log(response)
           dispatch(myProfileSuccess(response.data));
           // browserHistory.push('/register');
         }

@@ -1,16 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Link, withRouter } from 'react-router-dom';
-import decode from 'jwt-decode';
+import { connect } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import { LogOut } from '../redux/Actions';
 import { FaUserCircle, FaAlignLeft, FaTimes } from 'react-icons/fa';
 
 function Nav(props) {
-  useEffect(() => {
-    try {
-      const user = decode(localStorage.getItem('access_token')).user;
-      setUser(user);
-    } catch (error) { }
-  }, []);
-  const [user, setUser] = useState();
+  const dispatch = new useDispatch();
+  //console.log(props.token.user)
 
   const [toggle, setToggle] = useState(false);
 
@@ -18,6 +15,7 @@ function Nav(props) {
     setToggle(!toggle);
   };
 
+  //console.log(user)
   return (
     <header>
       <div className={!toggle ? 'hideSideBar ' : 'mobile-view'}>
@@ -34,7 +32,7 @@ function Nav(props) {
           <li className='home'>
             <Link to='/'>Home</Link>
           </li>
-          {user ? (
+          {props.token.user.fullname ? (
             <>
               <li>
                 <Link to='/market/myproduct'>My Product</Link>
@@ -42,14 +40,16 @@ function Nav(props) {
               <li>
                 <Link to='/market/myprofile'>
                   <FaUserCircle />
-                  {user && user.fullname ? user.fullname : null}
+                  {props.token.user.fullname && props.token.user.fullname
+                    ? props.token.user.fullname
+                    : null}
                 </Link>
               </li>
               <li
                 onClick={(e) => {
                   // console.log('click');
                   e.preventDefault();
-                  setUser('');
+                  //setUser('');
                   props.history.replace({
                     pathname: '/',
                   });
@@ -62,22 +62,24 @@ function Nav(props) {
               </li>
             </>
           ) : (
-              <li
-                className='home'
-                onClick={(e) => {
-                  e.preventDefault();
-                  localStorage.clear();
-                  setUser('');
-                  props.history.replace({
-                    pathname: '/login',
-                  });
+            <li
+              className='home'
+              onClick={(e) => {
+                e.preventDefault();
+                dispatch(LogOut());
+                //setUser('');
+                // localStorage.clear();
+                // setUser('');
+                // props.history.replace({
+                //   pathname: '/login',
+                // });
 
-                  // localStorage.setItem('access_token', '');
-                }}
-              >
-                Sign
-              </li>
-            )}
+                // localStorage.setItem('access_token', '');
+              }}
+            >
+              Sign
+            </li>
+          )}
         </ul>
       </div>
       {/* {user ? ( */}
@@ -93,26 +95,29 @@ function Nav(props) {
             <Link to='/'>Home</Link>
           </li>
 
-          {user ? (
+          {props.token.user.fullname ? (
             <>
               <li>
-                <Link to='/market/myproduct'>My Product</Link>
+                <Link to='/market/myproduct'>My Product </Link>
               </li>
               <li>
                 <Link to='/market/myprofile'>
                   <FaUserCircle />
-                  {user && user.fullname ? user.fullname : null}
+                  {props.token.user && props.token.user.fullname
+                    ? props.token.user.fullname
+                    : null}
                 </Link>
               </li>
               <li
                 onClick={(e) => {
                   e.preventDefault();
-                  setUser('');
-                  props.history.replace({
-                    pathname: '/',
-                  });
-                  localStorage.clear();
-                  window.location.reload();
+                  dispatch(LogOut());
+                  //setUser('');
+                  // props.history.replace({
+                  //   pathname: '/',
+                  // });
+                  // localStorage.clear();
+                  // window.location.reload();
                   // localStorage.setItem('access_token', '');
                 }}
               >
@@ -120,22 +125,22 @@ function Nav(props) {
               </li>
             </>
           ) : (
-              <li
-                className='home'
-                onClick={(e) => {
-                  e.preventDefault();
-                  localStorage.clear();
-                  setUser('');
-                  props.history.replace({
-                    pathname: '/login',
-                  });
+            <li
+              className='home'
+              onClick={(e) => {
+                e.preventDefault();
+                localStorage.clear();
+                // setUser('');
+                props.history.replace({
+                  pathname: '/login',
+                });
 
-                  // localStorage.setItem('access_token', '');
-                }}
-              >
-                Sign
-              </li>
-            )}
+                // localStorage.setItem('access_token', '');
+              }}
+            >
+              Sign
+            </li>
+          )}
         </ul>
       </div>
       {/* ) : null} */}
@@ -143,4 +148,10 @@ function Nav(props) {
   );
 }
 
-export default withRouter(Nav);
+const mapStateToProps = (state) => ({
+  token: state.token,
+});
+
+const mapDispatchToProps = {};
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Nav));

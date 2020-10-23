@@ -1,17 +1,24 @@
-import React, { useState } from 'react';
-import decode from 'jwt-decode';
-import { Link } from 'react-router-dom';
+import React, { useState,useEffect } from 'react';
+//import decode from 'jwt-decode';
+// import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { addProductDetails, addProductRequest } from '../redux/index';
+//import { addProductDetails, addProductRequest } from '../redux/index';
+import { addProductDetails,getAllProductAction } from '../redux/Actions';
 import { FaArrowLeft } from 'react-icons/fa';
 
-
-
-const AddProduct = (props) => {
-  const userCon = decode(localStorage.getItem('access_token')) || localStorage.getItem('access_token');
+const AddProduct = ({getAllProductAction,addProductDetails,token,location,getAllProduct,history}) => {
+ //const [contact,setContact] =useState("");
+ //console.log(contact)
+  //console.log(token.user.contact)
+  useEffect(() => {
+    getAllProductAction();
+    //setContact(token.user.contact)
+  }, [getAllProductAction])
+  //console.log(getAllProduct);
+  //console.log(contact)
   const defaultState = {
     product_name: '',
-    userContact: userCon && userCon.user ? userCon.user.contact : '',
+    userContact: token.user.contact,
     product_price: '',
     imageurl: '',
   };
@@ -25,11 +32,13 @@ const AddProduct = (props) => {
   const handleChange = (e) => {
     const name = e.target.name;
     const value = e.target.value;
-    setProductDetails({ ...productDetails, [name]: value });
+    setProductDetails({ ...productDetails, userContact:token.user.contact, [name]: value });
   };
+  //console.log(productDetails)
 
   // console.log(error);
   const vaildate = () => {
+    
     const {
       product_name,
       userContact,
@@ -60,8 +69,7 @@ const AddProduct = (props) => {
     const isVaild = vaildate();
 
     if (isVaild) {
-      props.addProductDetails(productDetails);
-      props.addProductRequest();
+      addProductDetails(productDetails);
       setProductDetails(defaultState);
     }
   };
@@ -74,9 +82,14 @@ const AddProduct = (props) => {
           <div className='wrap-login100'>
             <form className='login100-form validate-form'>
               <div className='header-nav'>
-                <Link to='/' className='path'>
+                <span
+                  className='path'
+                  onClick={(e) => {
+                    history.push(location.state ? location.state : '/');
+                  }}
+                >
                   <FaArrowLeft />
-                </Link>
+                </span>
                 <span className='login100-form-title '>Add Your Product</span>
               </div>
               <div className='login-input'>
@@ -95,7 +108,7 @@ const AddProduct = (props) => {
                     type='number'
                     name='userContact'
                     onChange={handleChange}
-                    value={productDetails.userContact}
+                    value={token.user.contact ? token.user.contact : ""}
                     placeholder='Enter Number e.g 081235XXXXXX'
                     required
                   />
@@ -123,17 +136,16 @@ const AddProduct = (props) => {
               </div>
               <p
                 className={
-                  props.addProduct.productDetails ? 'alert alert-success' : null
+                  getAllProduct.message
+                    ? 'text-center bg-success text-white my-2 py-2 br-0':  getAllProduct.error  || error?
+                     'text-center bg-danger text-white my-2 py-2 br-0' : null
                 }
               >
-                {props.addProduct.productDetails}
-              </p>
-              <p
-                className={
-                  props.addProduct.error || error ? 'alert alert-danger' : null
-                }
-              >
-                {error ? error : props.addProduct.error}
+                {getAllProduct.message
+                  ? getAllProduct.message
+                  : getAllProduct.error 
+                  ? getAllProduct.error
+                  : error ? error : null}
               </p>
               <div className='container-login100-form-btn'>
                 <button className='login100-form-btn' onClick={handleSubmit}>
@@ -150,13 +162,15 @@ const AddProduct = (props) => {
   );
 };
 const mapStateToProps = (state) => ({
-  addProduct: state.addProduct,
+  getAllProduct: state.getAllProduct,
+  token:state.token
 });
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    addProductDetails: (userLogin) => dispatch(addProductDetails(userLogin)),
-    addProductRequest: () => dispatch(addProductRequest()),
+    addProductDetails: (newProduct) => dispatch(addProductDetails(newProduct)),
+    getAllProductAction: () => dispatch(getAllProductAction()),
+    
   };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(AddProduct);

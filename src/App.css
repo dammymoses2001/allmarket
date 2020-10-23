@@ -28,12 +28,13 @@ html {
   -moz-transition: all 0.4s;
   transition: all 0.4s;
 }
-input {
+input,
+textarea {
   /* width: 100%;
   padding: 1em; */
   border-radius: 12px;
   padding: 1em;
-  /* border: none; */
+
   display: block;
   width: 100%;
   background: transparent;
@@ -42,6 +43,12 @@ input {
   color: #555555;
   padding: 1em 20px;
   /* border: 2px solid blue; */
+}
+
+.input .profile {
+  border: none;
+  /* border-bottom: 1px solid black;
+  border-radius: none; */
 }
 input [type='email'],
 input [type='password'] {
@@ -258,6 +265,16 @@ input:focus {
   position: absolute;
   top: 80px;
   right: 0;
+}
+.delete-product {
+  display: block;
+  position: fixed;
+  z-index: 1000;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  /* border: 2px solid blue; */
+  transition: all 2s;
 }
 
 .row {

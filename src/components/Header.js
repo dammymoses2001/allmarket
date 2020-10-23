@@ -1,16 +1,12 @@
-import React, { useEffect, useState } from 'react';
-import decode from 'jwt-decode';
+import React  from 'react';
+//import decode from 'jwt-decode';
 import model from '../Picture/model_3.png';
-import { Link, withRouter } from 'react-router-dom';
-
-export const Header = ({ title, description, button, history }) => {
-  useEffect(() => {
-    try {
-      const user = decode(localStorage.getItem('access_token')).user;
-      setUser(user);
-    } catch (error) { }
-  }, []);
-  const [user, setUser] = useState();
+import {  withRouter } from 'react-router-dom';
+import {useSelector} from 'react-redux'
+export const Header = ({ title, description, button, history, match }) => {
+  //console.log(match);
+  const user = useSelector((state) => state.token.user);
+  //console.log(user)
 
   return (
     <div className='Header'>
@@ -24,27 +20,41 @@ export const Header = ({ title, description, button, history }) => {
               <h3>{title}</h3>
               <h1>{description}</h1>
 
-              {user ? (
-                <Link to='/market/addproduct'>{button}</Link>
+              {user && user.email ? (
+                // <Link to='/market/addproduct'>{button}</Link>
+                <button
+                  className='btn btn-dark'
+                  onClick={(e) => {
+                    // console.log('click');
+                    e.preventDefault();
+                    //setUser('');
+                    history.replace({
+                      pathname: '/market/addproduct',
+                      state: match.url,
+                    });
+                  }}
+                >
+                 {button}
+                </button>
               ) : (
-                  <button
-                    className='btn btn-dark'
-                    to='/login'
-                    onClick={(e) => {
-                      // console.log('click');
-                      e.preventDefault();
-                      setUser('');
-                      history.replace({
-                        pathname: '/login',
-                      });
-                      localStorage.clear();
-                      //window.location.reload();
-                      // localStorage.setItem('access_token', '');
-                    }}
-                  >
-                    {button}
-                  </button>
-                )}
+                <button
+                  className='btn btn-dark'
+                  to='/login'
+                  onClick={(e) => {
+                    // console.log('click');
+                    e.preventDefault();
+                    //setUser('');
+                    history.replace({
+                      pathname: '/login',
+                    });
+                    localStorage.clear();
+                    //window.location.reload();
+                    // localStorage.setItem('access_token', '');
+                  }}
+                >
+                   Get Started
+                </button>
+              )}
               {/* <Link to='/market/addproduct'>{button}</Link> */}
             </div>
 

@@ -2,15 +2,15 @@ import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { FaArrowLeft } from 'react-icons/fa';
-import { myProfileAction } from '../redux/index';
-export const MyProfile = ({ myProfileAction, myProfile }) => {
+import { myProfileAction } from '../redux/Actions';
+export const MyProfile = ({ myProfileAction, userProfile }) => {
   useEffect(() => {
     myProfileAction();
   }, [myProfileAction]);
-
+//console.log(userProfile)
   return (
     <div>
-      {myProfile.myProfile.map((user) => (
+      {userProfile.myProfile.map((user) => (
         <div className='limiter' key={user.id}>
           <div className='container-login100'>
             <div className='wrap-login100'>
@@ -22,12 +22,13 @@ export const MyProfile = ({ myProfileAction, myProfile }) => {
                   <span className='login100-form-title '>My Profile</span>
                 </div>
                 <div className='login-input'>
-                  <div className='input'>
+                  <div className='input '>
                     <label className='h5'>Full Name:</label>
                     <input
                       type='text'
+                      className='profile'
                       name='fullname'
-                      defaultValue={user.fullname}
+                      defaultValue={user.fullname.toUpperCase()}
                       //onChange={handleChange}
                       disabled
                       placeholder='Enter Full Name e.g John Doe'
@@ -37,9 +38,10 @@ export const MyProfile = ({ myProfileAction, myProfile }) => {
                   <div className='input'>
                     <label className='h5'>Email:</label>
                     <input
+                      className='profile'
                       type='text'
                       name='email'
-                      defaultValue={user.email}
+                      defaultValue={user.email.toUpperCase()}
                       // onChange={handleChange}
                       placeholder='Enter Email e.g JohnDoe@gmail.com'
                       disabled
@@ -49,19 +51,21 @@ export const MyProfile = ({ myProfileAction, myProfile }) => {
                   <div className='input'>
                     <label className='h5'>Contact:</label>
                     <input
-                      type='number'
+                    className='profile'
+                      type='text'
                       name='contact'
-                      defaultValue={user.contact}
+                      defaultValue={user.contact.toUpperCase()}
                       // onChange={handleChange}
                       placeholder='Enter Contact e.g 081289XXXXX'
                     />
                   </div>
                   <div className='input'>
                     <label className='h5'>Date Joined</label>
-                    <input
+                    <textarea
+                      className='profile '
                       type='text'
                       name='dateJoined'
-                      defaultValue={user.datejoined}
+                      defaultValue={user.datejoined.toUpperCase()}
                       // onChange={handleChange}
                       placeholder='Enter Password'
                       disabled
@@ -86,7 +90,7 @@ export const MyProfile = ({ myProfileAction, myProfile }) => {
 };
 
 const mapStateToProps = (state) => ({
-  myProfile: state.myProfile,
+  userProfile: state.userProfile,
 });
 
 const mapDispatchToProps = (dispatch) => {

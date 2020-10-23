@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { registerUser } from '../redux/Register/registerAction';
+import { registerUser } from '../redux/Actions';
 import { FaArrowLeft } from 'react-icons/fa';
 const initialState = {
   fullname: '',
@@ -10,11 +10,11 @@ const initialState = {
   contact: '',
 };
 function Register(props) {
-  // console.log(props);
+  //console.log(props.register);
   const [register, setRegister] = useState(initialState);
   const [redirect, setRedirect] = useState(false);
   // console.log(register, props, redirect);
-  const [message, setMessage] = useState('');
+  const [message, setMessage] = useState({});
   const handleChange = (e) => {
     e.preventDefault();
     const { target } = e;
@@ -25,19 +25,32 @@ function Register(props) {
     e.preventDefault();
     setRedirect(!redirect);
     const { fullname, email, password, contact } = register;
-    console.log(email, password);
-    if (fullname.length > 1 && email.length > 1 && password.length > 1 && contact.length > 1) {
-      props.registerUser(register);
-      // setRegister(initialState);
+    //console.log(email, password);
+    if (
+      fullname.length > 1 &&
+      email.length > 1 &&
+      password.length > 1 &&
+      contact.length > 1
+    ) {
+      props.registerUser(register).then((response) => {
+       // console.log(response);
+       setMessage(response)
+       setRegister(initialState);
+        setTimeout(() => {
+          setMessage({});
+        }, 3000);
+      });
+     
       // console.log(props.register);
     } else {
-      setMessage('All fields are required');
+      setMessage({ data: 'All fields are required' });
       setTimeout(() => {
-        setMessage('');
+        setMessage({});
       }, 3000);
       // console.log('Adios');
     }
   };
+  //console.log(message);
   return (
     <div>
       <div className='limiter'>
@@ -90,14 +103,16 @@ function Register(props) {
                   />
                 </div>
               </div>
-              <p className={message ? 'alert alert-danger' : null}>{message}</p>
               <p
                 className={
-                  props.register.register ? 'alert alert-success' : null
+                  message && message.message === 'success'
+                    ? 'alert alert-success text-center '
+                    : message && message.message === 'failed' ? 'alert alert-danger ': null
                 }
               >
-                {props.register.register}
+                {message && message.data}
               </p>
+
               <div className='container-login100-form-btn'>
                 {/* <Link to='/login'> */}
                 <button className='login100-form-btn' onClick={handleSubmit}>

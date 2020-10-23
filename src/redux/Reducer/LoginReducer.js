@@ -1,32 +1,40 @@
-import {
-  LOGIN_USER_REQUEST,
-  LOGIN_USER_SUCCESS,
-  LOGIN_USER_FAILURE,
-} from './loginType';
-
+import { Login } from '../constant';
+//import decode from 'jwt-decode';
 const initialState = {
   loading: false,
   token: '',
+  user:[],
+  message: null,
   error: '',
   isLoggedIn: false,
 };
 
 const loginReducer = (state = initialState, action) => {
   switch (action.type) {
-    case LOGIN_USER_REQUEST:
+    case Login.LOGIN_USER_REQUEST:
+      //console.log(action.type);
       return {
         ...state,
         loading: true,
       };
 
-    case LOGIN_USER_SUCCESS:
+    case Login.LOGIN_USER_SUCCESS:
+      
       return {
         loading: false,
-        token: action.payload,
+        token: action.payload.token,
+        user:action.payload.user,
+        message: action.payload.message,
         isLoggedIn: true,
         error: '',
       };
-    case LOGIN_USER_FAILURE:
+
+    case Login.LOGOUT:
+      return {
+        ...initialState,
+      };
+
+    case Login.LOGIN_USER_FAILURE:
       return {
         loading: false,
         token: '',

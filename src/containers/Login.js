@@ -1,42 +1,42 @@
-import React, { useEffect } from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
-import { Link } from 'react-router-dom';
-import { FetchToken } from '../redux/index';
+import { Link, Redirect } from 'react-router-dom';
+//import { FetchToken } from '../redux/index';
+import { LoginAction } from '../redux/Actions';
 import Loading from '../components/Loading';
-export const Login = ({ history, token, FetchToken }) => {
-  // const [errorMessage, setErrorMessage] = useState(props.token.error);
-  // console.log(props);
-  useEffect(() => {
-    if (localStorage.getItem('access_token')) {
-      history.push({
-        pathname: '/',
-      });
-    }
-  });
-  // console.log(errorMessage);
-
+export const Login = ({ token, LoginAction }) => {
+ // console.log(token)
+const [message, setMessage] = useState("");
+  if (token.isLoggedIn) {
+    return <Redirect to='/' />;
+  }
+  //console.log(message);
   return (
     <div className='login'>
+     
       <div>
-        <p
-          className={
-            token.error
-              ? 'alert alert-danger text-center errorMessage'
-              : 'errorMessage'
-          }
-        >
-          {token.error}
-        </p>
-      </div>
-      <div>
+     
         <Formik
           initialValues={{ email: '', password: '' }}
           onSubmit={(values, { setSubmitting }) => {
             setTimeout(() => {
               //Enter my actions here
-              FetchToken(values);
+              LoginAction(values).then(data=>{
+                if(data){
+                  //console.log(data)
+                  setMessage('Invalid Credentials')
+                  // console.log(token.erro)
+                 // setMessage("Invalid Credentials")
+                  setTimeout(()=>{
+                   setMessage("")
+                    //console.log('login error in')
+                  },3000)
+                 
+                  //console.log('login error out')
+                }   
+              });
               // console.log('Logging in', values);
             });
           }}
@@ -45,7 +45,7 @@ export const Login = ({ history, token, FetchToken }) => {
             email: Yup.string().email().required('Email Field is required'),
             password: Yup.string()
               .required('Password Field is required')
-              .min(5, 'Password to short'),
+              .min(2, 'Password to short'),
             // .matches(/(?=.*[0-9])/, 'Password should contain a number'),
           })}
         >
@@ -110,7 +110,8 @@ export const Login = ({ history, token, FetchToken }) => {
                             )}
                           </div>
                         </div>
-                        {token.Loading ? <Loading /> : null}
+                            <div className={message ?'text-center bg-danger text-white my-2 py-2 br-0': null }>{message}</div>
+                        {Login.Loading ? <Loading /> : null}
 
                         <div className='container-login100-form-btn'>
                           <button
@@ -150,7 +151,8 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    FetchToken: (userLogin) => dispatch(FetchToken(userLogin)),
+    LoginAction: (data) => dispatch(LoginAction(data)),
+   // FetchToken: (userLogin) => dispatch(FetchToken(userLogin)),
   };
 };
 

@@ -1,56 +1,96 @@
-import React, { useEffect, useState } from 'react';
+import React, {  useState } from 'react';
 import Products from './Products';
 import Loading from './Loading';
-import decode from 'jwt-decode';
+import Modal from '../components/UI/modal';
 import { connect } from 'react-redux';
-import { fetchProduct, deleteProductDetails } from '../redux/index';
 import { withRouter } from 'react-router-dom';
 import { FaEdit, FaTrash } from 'react-icons/fa';
+import { getAllProductAction, deleteProductDetails } from '../redux/Actions';
 
-function AllProducts({ history, fetchProduct, deleteProductDetails, product }) {
-  useEffect(() => {
-    try {
-      //dont delete this code
+function AllProducts({ history, deleteProductDetails, getAllProduct, token,match }) {
+  //modal 
+  const [show, setShow] = useState(false);
 
-      const user = localStorage.getItem('access_token')
-        ? decode(localStorage.getItem('access_token')).user.email
-        : '';
-      setUserEmail(user);
-    } catch (error) { }
-  }, []);
-
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+  const [productId,setProductId]= useState("")
+  //console.log(history, location);
+  //console.log();
+  const [message, setMessage] = useState({});
   //after decoding the email
-  const [userEmail, setUserEmail] = useState();
-
-  useEffect(() => {
-    fetchProduct();
-  }, [fetchProduct]);
+ 
+  
+  
+  // useEffect(() => {
+  //   fetchProduct();
+  // }, [fetchProduct]);
 
   const handleEdit = (product) => {
     try {
       history.replace({
         pathname: '/market/update',
-        state: product,
+        state: {
+          product:product,
+          url:match.url
+        },
       });
-    } catch (error) { }
+    } catch (error) {}
   };
-  const handleDelete = (id) => {
-    deleteProductDetails(id);
+  const handleDelete = () => {
+    handleClose()
+   deleteProductDetails(productId).then((data) => {
+    setMessage(data);
+    setTimeout(()=>{
+      setMessage({})
+    },5000)
+  });
   };
+  const handleToogle = (id) =>{
+    handleShow()
+    setProductId(id)
+  }
   return (
     <div className='container'>
-
-      {product.loading ? (
+      <Modal  show={show} 
+      onHide={handleClose}
+      handleClose={handleClose}
+       title={"Delete Product"}
+       cancel={"Cancel"}
+       action={"Delete"}
+       body={"This action can't be undone."}
+       handleAction={handleDelete}
+       />
+      
+      {getAllProduct.loading ? (
         <div>
           <Loading />
         </div>
       ) : (
-          <>
-            {/* {console.log(product.product.length)} */}
-            {product.product.length === 0 ?
-              <div className='border-2 text-center my-5'> No Product Currently</div> :
-              <div className='row'>
-                {product.product.map((product) => (
+        <>
+          {/* {console.log(product.product.length)} */}
+          {getAllProduct.allProduct && getAllProduct.allProduct.length === 0 ? (
+            <div className='border-2 text-center my-5'>
+              No Product Currently
+            </div>
+          ) : (
+            <div className='row'>
+              
+              <div className={message.type === 'success' ? 'delete-product m-2' : null}>
+                  <span
+                    className={
+                      message.type === 'success'
+                        ? 'alert alert-success '
+                        : message.type === 'failed'
+                        ? 'alert alert-danger'
+                        : null
+                    }
+                  >
+                    {message.message}
+                  </span>
+                </div>
+
+              {getAllProduct.allProduct &&
+                getAllProduct.allProduct.map((product) => (
                   <div className='col-md-4' key={product.id}>
                     <Products
                       key={product.id}
@@ -60,14 +100,15 @@ function AllProducts({ history, fetchProduct, deleteProductDetails, product }) {
                       name={product.product_name}
                       contact={product.user_contact}
                       email={product.email}
-                      currentUserEmail={userEmail}
+                      currentUserEmail={token.user.email}
                     />
                     <div className='absolute d-flex justify-content-between'>
                       <div className='text-muted text-center price '>
                         ${product.product_price}
                       </div>
+                     
                       <div className='delete'>
-                        {userEmail === product.email ? (
+                        {token.user.email === product.email ? (
                           <div>
                             <FaEdit
                               className='product-icon'
@@ -78,7 +119,7 @@ function AllProducts({ history, fetchProduct, deleteProductDetails, product }) {
                             <FaTrash
                               className='product-icon'
                               color='white'
-                              onClick={() => handleDelete(product.id)}
+                              onClick={() => handleToogle(product.id)}
                             />
                           </div>
                         ) : null}
@@ -86,22 +127,24 @@ function AllProducts({ history, fetchProduct, deleteProductDetails, product }) {
                     </div>
                   </div>
                 ))}
-              </div>
-            }
-
-          </>
-        )}
+            </div>
+          )}
+        </>
+      )}
     </div>
   );
 }
 const mapStateToProps = (state) => ({
-  product: state.product,
-  deleteProduct: state.deleteProduct,
+  //product: state.product,
+  getAllProduct: state.getAllProduct,
+  userProducts: state.userProducts,
+  token: state.token,
 });
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    fetchProduct: () => dispatch(fetchProduct()),
+    // fetchProduct: () => dispatch(fetchProduct()),
+    getAllProductAction: () => dispatch(getAllProductAction()),
     deleteProductDetails: (id) => dispatch(deleteProductDetails(id)),
   };
 };

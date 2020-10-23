@@ -14,6 +14,7 @@ function Market() {
         button='Add Product'
       />
       <AddProducts />
+     
     </div>
   );
 }

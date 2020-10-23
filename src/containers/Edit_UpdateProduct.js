@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 // import decode from 'jwt-decode';
-import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { updateProductAction } from '../redux/index';
+import { editProductAction,getAllProductAction } from '../redux/Actions';
 import { FaArrowLeft } from 'react-icons/fa';
 
 // const userCon = localStorage.getItem('access_token');
@@ -13,19 +12,17 @@ const initial = {
   imageurl: '',
 };
 
-const Edit_UpdateProduct = (props) => {
-  // console.log();
-  //console.log(props.location);
-  // console.log(props);
-  const [productDetails, setProductDetails] = useState(
-    props.location.state ? props.location.state : initial
-  );
-  // const [productAdded, setProductAdded] = useState(false);
-  // const [productDetails, setProductDetails] = useState({
-  //   ...defaultState,
-  // });
+const Edit_UpdateProduct = ({location,getAllProductAction,editProductAction,getAllProduct,history}) => {
 
-  const [error, setError] = useState(null);
+  useEffect(() => {
+    getAllProductAction();
+    //setContact(token.user.contact)
+  }, [getAllProductAction])
+  const [productDetails, setProductDetails] = useState(
+    location.state.product ? location.state.product : initial
+  );
+  const [message, setMessage] = useState('');
+
   const handleChange = (e) => {
     const name = e.target.name;
     const value = e.target.value;
@@ -39,7 +36,7 @@ const Edit_UpdateProduct = (props) => {
       product_price,
       imageurl,
     } = productDetails;
-    let errorMessage = '';
+    
     // console.log(product_name.length);
     if (
       product_name.length < 1 ||
@@ -47,12 +44,12 @@ const Edit_UpdateProduct = (props) => {
       product_price.length < 1 ||
       imageurl < 1
     ) {
-      errorMessage = 'All field are mandatory';
+      const message = 'All field are mandatory';
 
-      console.log(errorMessage);
-      setError(errorMessage);
+      // console.log(errorMessage);
+      setMessage(message);
       setInterval(() => {
-        setError('');
+        setMessage('');
       }, 3000);
 
       return false;
@@ -65,10 +62,16 @@ const Edit_UpdateProduct = (props) => {
     e.preventDefault();
     const isVaild = vaildate();
     if (isVaild) {
-      props.updateProductAction(productDetails);
+      editProductAction(productDetails);
+     
     } else {
+     
     }
   };
+  const handleBack = () => {
+    history.push(location.state.url ? location.state.url : '/');
+  };
+
   // console.log(productDetails);
   return (
     <div>
@@ -77,9 +80,9 @@ const Edit_UpdateProduct = (props) => {
           <div className='wrap-login100'>
             <form className='login100-form validate-form'>
               <div className='header-nav'>
-                <Link to='/' className='path'>
+                <span className='path' onClick={handleBack}>
                   <FaArrowLeft />
-                </Link>
+                </span>
                 <span className='login100-form-title '>
                   Edit/Update Your Product
                 </span>
@@ -128,19 +131,14 @@ const Edit_UpdateProduct = (props) => {
               </div>
               <p
                 className={
-                  props.updateProduct.isUpdated ? 'alert alert-success' : null
-                }
-              >
-                {props.updateProduct.isUpdated}
-              </p>
-              <p
-                className={
-                  props.updateProduct.error || error
-                    ? 'alert alert-danger'
+                  message
+                    ? 'text-center bg-danger text-white my-4 py-2 br-0'
+                    : getAllProduct && getAllProduct.message
+                    ? 'text-center bg-success text-white my-4 py-2 br-0'
                     : null
                 }
               >
-                {error ? error : props.updateProduct.error}
+                {message ||   getAllProduct.message}
               </p>
               <div className='container-login100-form-btn'>
                 <button className='login100-form-btn' onClick={handleUpdate}>
@@ -157,12 +155,13 @@ const Edit_UpdateProduct = (props) => {
   );
 };
 const mapStateToProps = (state) => ({
-  updateProduct: state.updateProduct,
+  getAllProduct: state.getAllProduct,
 });
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    updateProductAction: (data) => dispatch(updateProductAction(data)),
+    editProductAction: (data) => dispatch(editProductAction(data)),
+    getAllProductAction: () => dispatch(getAllProductAction()),
   };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(Edit_UpdateProduct);

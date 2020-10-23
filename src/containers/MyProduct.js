@@ -1,30 +1,35 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import decode from 'jwt-decode';
 import Nav from '../components/Nav';
 import Header from '../components/Header';
-import Loading from '../components/Loading'
-import {
-  myProductAction,
-  deleteProductDetails,
-  myProductDelete,
-} from '../redux/index';
+import Loading from '../components/Loading';
+import Modal from '../components/UI/modal';
+import { getMyProductsAction, deleteProductDetails } from '../redux/Actions';
+
 import Products from '../components/Products';
 import { FaEdit, FaTrash } from 'react-icons/fa';
 export const MyProduct = ({
-  myProductAction,
   history,
   deleteProductDetails,
-  myProductDelete,
-  myProduct,
+  userProducts,
+  getMyProductsAction,
+  match,
+  token,
 }) => {
-  useEffect(() => {
-    myProductAction();
-  }, [myProductAction]);
+  //console.log(userProducts);
+  //modal
+  const [show, setShow] = useState(false);
 
-  const currentUser = localStorage.getItem('access_token')
-    ? decode(localStorage.getItem('access_token')).user.email
-    : '';
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+  const [productId, setProductId] = useState('');
+  //console.log(userProducts);
+  const [message, setMessage] = useState({});
+  useEffect(() => {
+    getMyProductsAction();
+  }, [getMyProductsAction]);
+
+  const currentUser = token.user.email ? token.user.email : '';
   //after decoding the email
   const [userEmail] = useState(currentUser);
 
@@ -32,14 +37,27 @@ export const MyProduct = ({
     try {
       history.replace({
         pathname: '/market/update',
-        state: product,
+        state: {
+          product: product,
+          url: match.url,
+        },
       });
-    } catch (error) { }
+    } catch (error) {}
   };
-  const handleDelete = (id) => {
-    console.log(id);
-    deleteProductDetails(id);
-    myProductDelete(id);
+  const handleDelete = () => {
+    //console.log(id);
+    handleClose();
+    deleteProductDetails(productId).then((data) => {
+      setMessage(data);
+      setTimeout(()=>{
+        setMessage({})
+      },5000)
+    });
+    //myProductDelete(id);
+  };
+  const handleToogle = (id) => {
+    handleShow();
+    setProductId(id);
   };
   return (
     <div>
@@ -50,16 +68,43 @@ export const MyProduct = ({
         button='Add More Product'
       />
       <div className='container'>
-        {myProduct.loading ? (
-          <div >
+        <Modal
+          show={show}
+          onHide={handleClose}
+          handleClose={handleClose}
+          title={'Delete Product'}
+          cancel={'Cancel'}
+          action={'Delete'}
+          body={"This action can't be undone."}
+          handleAction={handleDelete}
+        />
+        {userProducts.loading ? (
+          <div>
             <Loading />
           </div>
         ) : (
-            <>
-              {myProduct.myProduct.length === 0 ?
-                <div className='border-2 text-center my-5'>You don't have any product Currently</div> :
-                <div className='row'>
-                  {myProduct.myProduct.map((product) => (
+          <>
+            {userProducts.Products && userProducts.Products.length === 0 ? (
+              <div className='border-2 text-center my-5'>
+                You don't have any product Currently
+              </div>
+            ) : (
+              <div className='row'>
+                <div className={message.type === 'success' ? 'delete-product m-2' : null}>
+                  <span
+                    className={
+                      message.type === 'success'
+                        ? 'alert alert-success '
+                        : message.type === 'failed'
+                        ? 'alert alert-danger'
+                        : null
+                    }
+                  >
+                    {message.message}
+                  </span>
+                </div>
+                {userProducts.Products &&
+                  userProducts.Products.map((product) => (
                     <div className='col-md-4' key={product.id}>
                       <Products
                         key={product.id}
@@ -86,33 +131,33 @@ export const MyProduct = ({
                             <FaTrash
                               className='product-icon'
                               color='white'
-                              onClick={() => handleDelete(product.id)}
+                              onClick={() => handleToogle(product.id)}
                             />
                           </div>
                         </div>
                       </div>
                     </div>
                   ))}
-                </div>
-              }
-
-            </>
-          )}
+              </div>
+            )}
+          </>
+        )}
       </div>
     </div>
   );
 };
 
 const mapStateToProps = (state) => ({
-  myProduct: state.myProduct,
-  product: state.product,
+  // myProduct: state.myProduct,
+  //product: state.product,
+  userProducts: state.userProducts,
+  token: state.token,
 });
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    myProductAction: () => dispatch(myProductAction()),
+    getMyProductsAction: () => dispatch(getMyProductsAction()),
     deleteProductDetails: (id) => dispatch(deleteProductDetails(id)),
-    myProductDelete: (id) => dispatch(myProductDelete(id)),
   };
 };
 
