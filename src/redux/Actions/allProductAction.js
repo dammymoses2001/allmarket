@@ -21,11 +21,11 @@ export const getAllProductAction = () => {
     dispatch(getAllProductRequest());
     const res = await axiosInstance.get('/market');
     if (res.status === 200) {
-     // console.log(res.data);
+      // console.log(res.data);
       dispatch(getAllProductSuccess(res.data));
     }
     if (res.status === 400) {
-     // console.log(res.data);
+      // console.log(res.data);
       dispatch(getAllProductFailure(res.data));
     }
   };
@@ -56,7 +56,7 @@ export const addProductDetails = (data) => {
           productPrice: data.product_price,
           imageurl: data.imageurl,
         },
-  
+
         {
           headers: {
             Authorization: token ? `Bearer ${token}` : '',
@@ -67,12 +67,12 @@ export const addProductDetails = (data) => {
         //console.log(res.data);
         dispatch(addProductSuccess(res.data));
       }
-  
+
     } catch (error) {
       dispatch(getAllProductFailure(error.response.data));
     }
-    
-  
+
+
     // if (res.status === 400) {
     //   dispatch(getAllProductFailure(res.data));
     // }
@@ -87,6 +87,7 @@ const editProductSuccess = (payload) => ({
 });
 
 export const editProductAction = (data) => {
+  // console.log(data)
   const token = localStorage.getItem('access_token');
   const user = decode(localStorage.getItem('access_token')).user;
   ///console.log(token);
@@ -95,29 +96,29 @@ export const editProductAction = (data) => {
   return async (dispatch) => {
     try {
       dispatch(getAllProductRequest());
-    const res = await axiosInstance.put(
-      '/market/update',
-      {
-        id: data.id,
-        email,
-        productName: data.product_name,
-        productPrice: data.product_price,
-        userContact: data.user_contact,
-        imageurl: data.imageurl,
-      },
-
-      {
-        headers: {
-          Authorization: token ? `Bearer ${token}` : '',
+      const res = await axiosInstance.put(
+        '/market/update',
+        {
+          id: data.id,
+          email,
+          productName: data.product_name,
+          productPrice: data.product_price,
+          userContact: data.user_contact,
+          imageurl: data.imageurl,
         },
+
+        {
+          headers: {
+            Authorization: token ? `Bearer ${token}` : '',
+          },
+        }
+      );
+      if (res.status === 201) {
+        //console.log(res.data);
+        //const token
+        dispatch(editProductSuccess(res.data));
+        // return res.data
       }
-    );
-    if (res.status === 201) {
-      //console.log(res.data);
-      //const token
-      dispatch(editProductSuccess(res.data));
-     // return res.data
-    }
     } catch (error) {
       //console.log(error.response.data)
       dispatch(getAllProductFailure(error.response.data));
@@ -144,25 +145,25 @@ export const deleteProductDetails = (id) => {
   return async (dispatch) => {
     try {
       dispatch(getAllProductRequest());
-    axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${token}`
-    const res = await axiosInstance.delete(`/market/delete/${id}`, {
-      data: {
-        email: currentUser,
-      },
-    });
-    if (res.status === 200) {
-     //alert(res.data.message);
-     const data={
-      type:"success",
-      message:res.data.message
-    }
-      dispatch(deleteProductSuccess(res.data));
-     return data;
-    }
+      axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${token}`
+      const res = await axiosInstance.delete(`/market/delete/${id}`, {
+        data: {
+          email: currentUser,
+        },
+      });
+      if (res.status === 200) {
+        //alert(res.data.message);
+        const data = {
+          type: "success",
+          message: res.data.message
+        }
+        dispatch(deleteProductSuccess(res.data));
+        return data;
+      }
     } catch (error) {
-      const data={
-        type:"failed",
-        message:error.response.data
+      const data = {
+        type: "failed",
+        message: error.response.data
       }
       dispatch(getAllProductFailure(error.response.data));
       return data;
