@@ -39,3 +39,4 @@
 [1109/094104.845:ERROR:exception_snapshot_win.cc(99)] thread ID 1488 not found in process
 [1109/094104.845:ERROR:exception_snapshot_win.cc(99)] thread ID 6392 not found in process
 [1109/094104.845:ERROR:exception_snapshot_win.cc(99)] thread ID 16356 not found in process
+[1111/075411.447:ERROR:directory_reader_win.cc(43)] FindFirstFile: The system cannot find the path specified. (0x3)
