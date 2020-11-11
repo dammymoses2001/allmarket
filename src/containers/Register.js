@@ -33,14 +33,14 @@ function Register(props) {
       contact.length > 1
     ) {
       props.registerUser(register).then((response) => {
-       // console.log(response);
-       setMessage(response)
-       setRegister(initialState);
+        // console.log(response);
+        setMessage(response)
+        setRegister(initialState);
         setTimeout(() => {
           setMessage({});
         }, 3000);
       });
-     
+
       // console.log(props.register);
     } else {
       setMessage({ data: 'All fields are required' });
@@ -107,7 +107,8 @@ function Register(props) {
                 className={
                   message && message.message === 'success'
                     ? 'alert alert-success text-center '
-                    : message && message.message === 'failed' ? 'alert alert-danger ': null
+                    : message && message.message === 'failed' ? 'alert alert-danger  text-center ' :
+                      message.data ? 'alert alert-danger  text-center ' : null
                 }
               >
                 {message && message.data}
