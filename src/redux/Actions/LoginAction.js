@@ -36,6 +36,7 @@ export const LoginAction = (userdetails) => {
         password: userdetails.password,
       })
       if (response.status === 200) {
+        console.log(response)
         const token = {
           user: decode(response.data.token).user,
           token: response.data.token
@@ -43,11 +44,12 @@ export const LoginAction = (userdetails) => {
         localStorage.clear();
         localStorage.setItem('access_token', response.data.token);
         dispatch(loginUserSuccess(token));
-       
+
 
       }
     } catch (error) {
-      dispatch(loginUserFailure(error.response.data ? error.response.data : ''))
+      console.log(error)
+      //dispatch(loginUserFailure(error.response.data ? error.response.data : ''))
       //console.log(error.response)
       return true
     }
