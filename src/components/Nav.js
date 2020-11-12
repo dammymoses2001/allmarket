@@ -30,7 +30,7 @@ function Nav(props) {
 
         <ul className='mobile'>
           <li className='home'>
-            <Link to='/'>Home</Link>
+            <Link to='/'>Shop</Link>
           </li>
           {props.token.user.fullname ? (
             <>
@@ -62,24 +62,24 @@ function Nav(props) {
               </li>
             </>
           ) : (
-            <li
-              className='home'
-              onClick={(e) => {
-                e.preventDefault();
-                dispatch(LogOut());
-                //setUser('');
-                // localStorage.clear();
-                // setUser('');
-                // props.history.replace({
-                //   pathname: '/login',
-                // });
+              <li
+                className='home'
+                onClick={(e) => {
+                  e.preventDefault();
+                  dispatch(LogOut());
+                  //setUser('');
+                  // localStorage.clear();
+                  // setUser('');
+                  // props.history.replace({
+                  //   pathname: '/login',
+                  // });
 
-                // localStorage.setItem('access_token', '');
-              }}
-            >
-              Sign
-            </li>
-          )}
+                  // localStorage.setItem('access_token', '');
+                }}
+              >
+                Sign
+              </li>
+            )}
         </ul>
       </div>
       {/* {user ? ( */}
@@ -92,7 +92,7 @@ function Nav(props) {
         </span>
         <ul className='hide'>
           <li className='home'>
-            <Link to='/'>Home</Link>
+            <Link to='/'>Shop</Link>
           </li>
 
           {props.token.user.fullname ? (
@@ -125,22 +125,22 @@ function Nav(props) {
               </li>
             </>
           ) : (
-            <li
-              className='home'
-              onClick={(e) => {
-                e.preventDefault();
-                localStorage.clear();
-                // setUser('');
-                props.history.replace({
-                  pathname: '/login',
-                });
+              <li
+                className='home'
+                onClick={(e) => {
+                  e.preventDefault();
+                  localStorage.clear();
+                  // setUser('');
+                  props.history.replace({
+                    pathname: '/login',
+                  });
 
-                // localStorage.setItem('access_token', '');
-              }}
-            >
-              Sign
-            </li>
-          )}
+                  // localStorage.setItem('access_token', '');
+                }}
+              >
+                Sign
+              </li>
+            )}
         </ul>
       </div>
       {/* ) : null} */}
