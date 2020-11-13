@@ -4,7 +4,7 @@ import Loading from './Loading';
 import Modal from '../components/UI/modal';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import { FaEdit, FaTrash } from 'react-icons/fa';
+//import { FaEdit, FaTrash } from 'react-icons/fa';
 import { getAllProductAction, deleteProductDetails } from '../redux/Actions';
 
 function AllProducts({ history, deleteProductDetails, getAllProduct, token, match }) {
