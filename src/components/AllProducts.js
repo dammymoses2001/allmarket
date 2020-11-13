@@ -25,17 +25,17 @@ function AllProducts({ history, deleteProductDetails, getAllProduct, token, matc
   //   fetchProduct();
   // }, [fetchProduct]);
 
-  const handleEdit = (product) => {
-    try {
-      history.replace({
-        pathname: '/market/update',
-        state: {
-          product: product,
-          url: match.url
-        },
-      });
-    } catch (error) { }
-  };
+  // const handleEdit = (product) => {
+  //   try {
+  //     history.replace({
+  //       pathname: '/market/update',
+  //       state: {
+  //         product: product,
+  //         url: match.url
+  //       },
+  //     });
+  //   } catch (error) { }
+  // };
   const handleDelete = () => {
     handleClose()
     deleteProductDetails(productId).then((data) => {
@@ -45,10 +45,10 @@ function AllProducts({ history, deleteProductDetails, getAllProduct, token, matc
       }, 5000)
     });
   };
-  const handleToogle = (id) => {
-    handleShow()
-    setProductId(id)
-  }
+  // const handleToogle = (id) => {
+  //   handleShow()
+  //   setProductId(id)
+  // }
   return (
     <div className='container'>
       <Modal show={show}
