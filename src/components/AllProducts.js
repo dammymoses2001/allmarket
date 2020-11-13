@@ -14,7 +14,7 @@ function AllProducts({ deleteProductDetails, getAllProduct, token }) {
 
   const handleClose = () => setShow(false);
   //const handleShow = () => setShow(true);
-  //const [productId, setProductId] = useState("")
+  const [productId] = useState("")
   //console.log(history, location);
   //console.log();
   const [message, setMessage] = useState({});
