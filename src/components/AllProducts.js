@@ -7,13 +7,14 @@ import { withRouter } from 'react-router-dom';
 //import { FaEdit, FaTrash } from 'react-icons/fa';
 import { getAllProductAction, deleteProductDetails } from '../redux/Actions';
 
-function AllProducts({ history, deleteProductDetails, getAllProduct, token, match }) {
+function AllProducts({ deleteProductDetails, getAllProduct, token }) {
+  //history and match was deleted
   //modal 
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
-  const [productId, setProductId] = useState("")
+  //const handleShow = () => setShow(true);
+  //const [productId, setProductId] = useState("")
   //console.log(history, location);
   //console.log();
   const [message, setMessage] = useState({});
